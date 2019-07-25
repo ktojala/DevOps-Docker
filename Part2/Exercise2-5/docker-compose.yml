@@ -1,0 +1,23 @@
+version: '3.5' 
+
+services: 
+    backend:  
+      image: backendi
+      build: .
+      ports: 
+        - 8000:8000
+      environment:
+        - REDIS=redis
+
+    frontend:  
+      image: frontendi
+      build: .
+      ports: 
+        - 5000:5000
+
+    redis:  
+      image: redis
+      container_name: cache-for-redis
+      restart: unless-stopped
+      ports: 
+       - 6379:6379

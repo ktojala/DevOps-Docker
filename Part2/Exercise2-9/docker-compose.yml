@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+    postgres:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        - POSTGRES_PASSWORD=alasana
+        - POSTGRES_USER=postgres
+      container_name: postgres     
+      volumes:
+        - ./database:/var/lib/postgresql/data
+
+    frontend:  
+      build: frontend/
+      container_name: frontend
+      depends_on: 
+        - backend
+
+    backend:  
+      build: backend/
+      environment:
+        - REDIS=redis
+        - DB_USERNAME=postgres
+        - DB_PASSWORD=alasana
+        - DB_HOST=postgres
+      depends_on:
+        - redis
+        - postgres
+      container_name: backend
+
+    redis:
+      image: redis
+      restart: unless-stopped
+      command: ["redis-server", "--appendonly", "yes"]
+      ports: 
+        - 6379:6379
+      container_name: cache-redis
+      volumes:
+        - ./redis-data:/data
+    proxy: 
+      image: jwilder/nginx-proxy
+      ports: 
+        - 80:80
+      volumes:   
+        - ./nginx.conf:/etc/nginx/nginx.conf
+        - /var/run/docker.sock:/tmp/docker.sock:ro  # jwilder proxy needs
+      depends_on:
+        - frontend
+        - backend
+      container_name: proxy
+
+volumes:
+  database:
+  redis-data:

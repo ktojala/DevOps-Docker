@@ -1,0 +1,32 @@
+version: '3.5' 
+
+services: 
+    backend:  
+      image: kurkku-bakki
+      build: ./ml-kurkkumopo-backend
+      ports: 
+        - 5000:5000
+      depends_on:
+        - traineri
+      volumes:
+        - model:/src/model
+
+    frontend:  
+      image: kurkku-frontti
+      build: ./ml-kurkkumopo-frontend
+      ports: 
+        - 3000:3000
+
+    traineri:  
+      image: kurkku-traini
+      build: ./ml-kurkkumopo-training
+
+      volumes:
+        - model:/src/model
+        - images:/src/imgs
+        - data:/src/data
+  
+volumes:
+  model:
+  images:
+  data:
