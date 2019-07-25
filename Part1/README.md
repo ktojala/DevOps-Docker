@@ -120,8 +120,8 @@ fd5ee4d98306345295e6621ddd7d3ee1babc23066a6ba8923fd63ca7534b1f0e
 
 Commands:
 
-$ docker run -p 1234:80 devopsdockeruh/ports_exercise  
-$ http://localhost:1234
+$ docker run -p 2244:80 devopsdockeruh/ports_exercise  
+$ http://localhost:2244
 
 That web page then shows this text: Ports configured correctly!!
 
@@ -178,6 +178,8 @@ Commands:
 
 $ docker build -t springi .  
 $ docker run -d -p 8080:8080 springi
+
+Message "Success" seen.
 
 
 # Exercise 1.14
